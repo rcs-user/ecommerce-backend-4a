@@ -1,40 +1,37 @@
 package br.edu.unifio.ecommerce.entidades;
 
-import java.math.BigDecimal;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 
 @Entity
 @Getter
 @Setter
-public class ItemPedido {
+public class Veiculo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @JsonIgnore
-    @ManyToOne(optional = false)
-    private Pedido pedido;
+    @NotBlank
+    @Size(max = 10)
+    @Column(nullable = false, unique = true)
+    private String placa;
 
-    @NotNull
-    @ManyToOne(optional = false)
-    private Produto produto;
+    @NotBlank
+    @Size(max = 120)
+    @Column(nullable = false)
+    private String modelo;
 
     @NotNull
     @Min(1)
     @Column(nullable = false)
-    private Short quantidade;
-
-    @Column(nullable = false, precision = 12, scale = 2)
-    private BigDecimal precoUnitario;
+    private Integer capacidade;
 }

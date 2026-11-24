@@ -24,7 +24,7 @@ public class SecurityConfig {
                 .authenticationEntryPoint((request, response, exception) -> {
                     response.setStatus(HttpStatus.UNAUTHORIZED.value());
                     response.setContentType("application/json");
-                    response.setHeader("WWW-Authenticate", "Basic realm=\"E-commerce API\"");
+                    response.setHeader("WWW-Authenticate", "Basic realm=\"ToAqui API\"");
                     response.getWriter().write(
                             "{\"status\":401,\"erro\":\"Unauthorized\",\"mensagem\":\"Autenticação obrigatória ou credenciais inválidas\"}");
                 })
@@ -37,10 +37,10 @@ public class SecurityConfig {
         http.authorizeHttpRequests(auth -> auth
                 .requestMatchers("/", "/index.html", "/error").permitAll()
                 .requestMatchers(HttpMethod.DELETE, "/**").hasRole("ADMIN")
-                .requestMatchers(HttpMethod.POST, "/**").hasAnyRole("ADMIN", "VENDEDOR")
-                .requestMatchers(HttpMethod.PUT, "/**").hasAnyRole("ADMIN", "VENDEDOR")
-                .requestMatchers(HttpMethod.PATCH, "/**").hasAnyRole("ADMIN", "VENDEDOR")
-                .requestMatchers(HttpMethod.GET, "/**").hasAnyRole("ADMIN", "VENDEDOR")
+                .requestMatchers(HttpMethod.POST, "/**").hasAnyRole("ADMIN", "MONITOR", "RESPONSAVEL")
+                .requestMatchers(HttpMethod.PUT, "/**").hasAnyRole("ADMIN", "MONITOR", "RESPONSAVEL")
+                .requestMatchers(HttpMethod.PATCH, "/**").hasAnyRole("ADMIN", "MONITOR")
+                .requestMatchers(HttpMethod.GET, "/**").hasAnyRole("ADMIN", "MONITOR", "RESPONSAVEL", "ALUNO")
                 .anyRequest().authenticated());
         return http.build();
     }
@@ -52,14 +52,22 @@ public class SecurityConfig {
 
     @Bean
     UserDetailsService users(PasswordEncoder encoder) {
-        var admin = User.withUsername("admin")
-                .password(encoder.encode("admin123"))
+        var monitor = User.withUsername("rcs2")
+                .password(encoder.encode("1234"))
+                .roles("MONITOR")
+                .build();
+        var aluno = User.withUsername("rcs3")
+                .password(encoder.encode("1234"))
+                .roles("ALUNO")
+                .build();
+        var responsavel = User.withUsername("rcs1")
+                .password(encoder.encode("1234"))
+                .roles("RESPONSAVEL")
+                .build();
+        var toaquiAdmin = User.withUsername("rcs4")
+                .password(encoder.encode("1234"))
                 .roles("ADMIN")
                 .build();
-        var vendedor = User.withUsername("vendedor")
-                .password(encoder.encode("vendedor123"))
-                .roles("VENDEDOR")
-                .build();
-        return new InMemoryUserDetailsManager(admin, vendedor);
+        return new InMemoryUserDetailsManager(monitor, aluno, responsavel, toaquiAdmin);
     }
 }

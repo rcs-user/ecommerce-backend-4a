@@ -1,20 +1,24 @@
-# Projeto Integrador - Backend de E-commerce
+# Projeto Integrador - ToAqui
 
-Backend REST em Spring Boot para gerenciamento de um e-commerce. O projeto cobre categorias, produtos, clientes, pedidos e itens de pedido, com regras de estoque e autenticação por HTTP Basic.
+Backend REST em Spring Boot para gerenciamento do transporte escolar ToAqui.
+
+## Objetivo
+
+Disponibilizar uma API organizada para cadastrar responsáveis, alunos, motoristas e veículos, além de planejar viagens, controlar presença e validar regras operacionais do domínio.
 
 ## Tecnologias
 
 - Java 21
 - Spring Boot 4
-- Spring Data JPA / Hibernate
+- Spring Data JPA
+- MySQL
 - Spring Security HTTP Basic
 - Bean Validation
-- MySQL
 - Maven
 
 ## Como executar
 
-1. Configure o MySQL em `ecommerce/src/main/resources/application.properties`.
+1. Configure MySQL em `ecommerce/src/main/resources/application.properties`.
 2. Execute:
 
 ```bash
@@ -22,28 +26,28 @@ cd ecommerce
 ./mvnw spring-boot:run
 ```
 
-3. A aplicação ficará disponível em `http://localhost:8080`. A página inicial oferece um formulário de login e uma lista de produtos. O formulário autentica com HTTP Basic; os endpoints da API continuam protegidos.
+3. A API ficará disponível em `http://localhost:8080`.
 
 ## Usuários de teste
 
 | Usuário | Senha | Perfil |
 |---|---|---|
-| `admin` | `admin123` | ADMIN |
-| `vendedor` | `vendedor123` | VENDEDOR |
+| rcs4 | 1234 | ADMIN |
+| rcs1 | 1234 | RESPONSAVEL |
+| rcs2 | 1234 | MONITOR |
+| rcs3 | 1234 | ALUNO |
 
-O perfil ADMIN pode excluir recursos. Os dois perfis podem consultar e alterar dados; endpoints não autenticados recebem `401`.
+Somente o perfil ADMIN pode excluir registros.
 
 ## Organização
 
-- `src/main/java/.../entidades`: entidades JPA
-- `src/main/java/.../repositorios`: acesso com Spring Data
-- `src/main/java/.../servicos`: regras de negócio
-- `src/main/java/.../recursos`: controllers REST
-- `src/main/java/.../exceptions`: exceções e tratamento centralizado
-- `src/main/java/.../config`: segurança
-- `docs/documentacao-api.md`: documentação dos endpoints
-- `docs/modelo-dados.md`: modelo entidade-relacionamento
-- `postman/projeto-integrador.postman_collection.json`: coleção de testes
+- `entidades`: modelo JPA do domínio ToAqui
+- `repositorios`: persistência com Spring Data JPA
+- `servicos`: regras de negócio
+- `recursos`: controllers REST
+- `exceptions`: exceções e respostas centralizadas
+- `docs`: documentação e modelo de dados
+- `postman`: coleção exportada com testes
 
 ## Integrantes
 

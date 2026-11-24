@@ -1,6 +1,6 @@
 {
   "info": {
-    "name": "Projeto Integrador - E-commerce",
+    "name": "Projeto Integrador - ToAqui",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "auth": {
@@ -12,69 +12,196 @@
   },
   "variable": [
     {"key": "baseUrl", "value": "http://localhost:8080"},
-    {"key": "username", "value": "admin"},
-    {"key": "password", "value": "admin123"}
+    {"key": "username", "value": "rcs4"},
+    {"key": "password", "value": "1234"},
+    {"key": "responsavelId", "value": ""},
+    {"key": "alunoId", "value": ""},
+    {"key": "motoristaId", "value": ""},
+    {"key": "veiculoId", "value": ""},
+    {"key": "viagemId", "value": ""},
+    {"key": "placaTeste", "value": "T1{{$randomInt}}"},
+    {"key": "cnhTeste", "value": "CNH{{$timestamp}}"}
   ],
   "item": [
     {
-      "name": "Categorias",
+      "name": "00 - Status",
       "item": [
-        {"name": "Listar categorias", "request": {"method": "GET", "url": "{{baseUrl}}/categorias"}},
-        {"name": "Criar categoria", "request": {"method": "POST", "header": [{"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{\n  \"nome\": \"Esportes\",\n  \"descricao\": \"Produtos esportivos\"\n}"}, "url": "{{baseUrl}}/categorias"}},
-        {"name": "Buscar categoria", "request": {"method": "GET", "url": "{{baseUrl}}/categorias/1"}},
-        {"name": "Atualizar categoria", "request": {"method": "PUT", "header": [{"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{\n  \"nome\": \"Informática\",\n  \"descricao\": \"Computadores e periféricos\"\n}"}, "url": "{{baseUrl}}/categorias/1"}},
-        {"name": "Excluir categoria", "request": {"method": "DELETE", "url": "{{baseUrl}}/categorias/1"}}
+        {"name": "Status da API", "request": {"method": "GET", "url": "{{baseUrl}}/api/status"}}
       ]
     },
     {
-      "name": "Produtos",
+      "name": "01 - Responsaveis",
       "item": [
-        {"name": "Listar produtos", "request": {"method": "GET", "url": "{{baseUrl}}/produtos"}},
-        {"name": "Produtos por categoria", "request": {"method": "GET", "url": "{{baseUrl}}/produtos/consultas/categoria/1"}},
-        {"name": "Produtos até preço", "request": {"method": "GET", "url": "{{baseUrl}}/produtos/consultas/preco?limite=200"}},
-        {"name": "Estoque baixo", "request": {"method": "GET", "url": "{{baseUrl}}/produtos/consultas/estoque-baixo?limite=10"}},
-        {"name": "Criar produto", "request": {"method": "POST", "header": [{"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{\n  \"nome\": \"Mouse Gamer\",\n  \"descricao\": \"Mouse de alta precisão\",\n  \"estoque\": 20,\n  \"preco\": 199.90,\n  \"categoria\": {\"id\": 1}\n}"}, "url": "{{baseUrl}}/produtos"}},
-        {"name": "Atualizar produto", "request": {"method": "PUT", "header": [{"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{\n  \"nome\": \"Mouse Gamer\",\n  \"descricao\": \"Atualizado\",\n  \"estoque\": 15,\n  \"preco\": 189.90,\n  \"categoria\": {\"id\": 1}\n}"}, "url": "{{baseUrl}}/produtos/1"}},
-        {"name": "Excluir produto", "request": {"method": "DELETE", "url": "{{baseUrl}}/produtos/1"}}
+        {
+          "name": "Criar responsavel",
+          "event": [{"listen": "test", "script": {"type": "text/javascript", "exec": [
+            "pm.test('Responsavel criado', () => pm.response.to.have.status(201));",
+            "pm.collectionVariables.set('responsavelId', String(pm.response.json().id));"
+          ]}}],
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {"mode": "raw", "raw": "{\n  \"nome\": \"Responsável Teste\",\n  \"telefone\": \"(44) 99999-1000\",\n  \"email\": \"responsavel.{{$guid}}@example.com\"\n}"},
+            "url": "{{baseUrl}}/responsaveis"
+          }
+        },
+        {"name": "Listar responsaveis", "request": {"method": "GET", "url": "{{baseUrl}}/responsaveis"}},
+        {"name": "Buscar responsavel criado", "request": {"method": "GET", "url": "{{baseUrl}}/responsaveis/{{responsavelId}}"}},
+        {
+          "name": "Atualizar responsavel",
+          "request": {
+            "method": "PUT",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {"mode": "raw", "raw": "{\n  \"nome\": \"Responsável Atualizado\",\n  \"telefone\": \"(44) 99999-1001\",\n  \"email\": \"responsavel.{{$guid}}@example.com\"\n}"},
+            "url": "{{baseUrl}}/responsaveis/{{responsavelId}}"
+          }
+        }
       ]
     },
     {
-      "name": "Clientes",
+      "name": "02 - Alunos",
       "item": [
-        {"name": "Listar clientes", "request": {"method": "GET", "url": "{{baseUrl}}/clientes"}},
-        {"name": "Criar cliente", "request": {"method": "POST", "header": [{"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{\n  \"nome\": \"Ana Pereira\",\n  \"email\": \"ana@example.com\",\n  \"documento\": \"11122233344\",\n  \"endereco\": \"Rua Central, 10\"\n}"}, "url": "{{baseUrl}}/clientes"}},
-        {"name": "Excluir cliente", "request": {"method": "DELETE", "url": "{{baseUrl}}/clientes/1"}}
+        {
+          "name": "Criar aluno",
+          "event": [{"listen": "test", "script": {"type": "text/javascript", "exec": [
+            "pm.test('Aluno criado', () => pm.response.to.have.status(201));",
+            "pm.collectionVariables.set('alunoId', String(pm.response.json().id));"
+          ]}}],
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {"mode": "raw", "raw": "{\n  \"nome\": \"Aluno Teste\",\n  \"escola\": \"Escola ToAqui\",\n  \"turma\": \"4º Ano A\",\n  \"responsavel\": {\"id\": {{responsavelId}}}\n}"},
+            "url": "{{baseUrl}}/alunos"
+          }
+        },
+        {"name": "Listar alunos", "request": {"method": "GET", "url": "{{baseUrl}}/alunos"}},
+        {"name": "Buscar aluno criado", "request": {"method": "GET", "url": "{{baseUrl}}/alunos/{{alunoId}}"}},
+        {"name": "Alunos por responsavel", "request": {"method": "GET", "url": "{{baseUrl}}/alunos/consultas/responsavel/{{responsavelId}}"}},
+        {
+          "name": "Atualizar aluno",
+          "request": {
+            "method": "PUT",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {"mode": "raw", "raw": "{\n  \"nome\": \"Aluno Atualizado\",\n  \"escola\": \"Escola ToAqui\",\n  \"turma\": \"5º Ano B\",\n  \"responsavel\": {\"id\": {{responsavelId}}}\n}"},
+            "url": "{{baseUrl}}/alunos/{{alunoId}}"
+          }
+        }
       ]
     },
     {
-      "name": "Pedidos",
+      "name": "03 - Motoristas",
       "item": [
-        {"name": "Criar pedido", "request": {"method": "POST", "header": [{"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{\n  \"cliente\": {\"id\": 1},\n  \"itens\": [{\"produto\": {\"id\": 2}, \"quantidade\": 1}]\n}"}, "url": "{{baseUrl}}/pedidos"}},
-        {"name": "Listar pedidos", "request": {"method": "GET", "url": "{{baseUrl}}/pedidos"}},
-        {"name": "Pedidos por status", "request": {"method": "GET", "url": "{{baseUrl}}/pedidos/consultas/status?status=NOVO"}},
-        {"name": "Pedidos por cliente", "request": {"method": "GET", "url": "{{baseUrl}}/pedidos/consultas/cliente/1"}},
-        {"name": "Cancelar pedido", "request": {"method": "PATCH", "url": "{{baseUrl}}/pedidos/1/status?status=CANCELADO"}},
-        {"name": "Excluir pedido", "request": {"method": "DELETE", "url": "{{baseUrl}}/pedidos/1"}}
+        {
+          "name": "Criar motorista",
+          "event": [{"listen": "test", "script": {"type": "text/javascript", "exec": [
+            "pm.test('Motorista criado', () => pm.response.to.have.status(201));",
+            "pm.collectionVariables.set('motoristaId', String(pm.response.json().id));"
+          ]}}],
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {"mode": "raw", "raw": "{\n  \"nome\": \"Motorista Teste\",\n  \"telefone\": \"(44) 99999-2000\",\n  \"registroCnh\": \"{{cnhTeste}}\"\n}"},
+            "url": "{{baseUrl}}/motoristas"
+          }
+        },
+        {"name": "Listar motoristas", "request": {"method": "GET", "url": "{{baseUrl}}/motoristas"}},
+        {"name": "Buscar motorista", "request": {"method": "GET", "url": "{{baseUrl}}/motoristas/{{motoristaId}}"}},
+        {
+          "name": "Atualizar motorista",
+          "request": {
+            "method": "PUT",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {"mode": "raw", "raw": "{\n  \"nome\": \"Motorista Atualizado\",\n  \"telefone\": \"(44) 99999-2001\",\n  \"registroCnh\": \"{{cnhTeste}}\"\n}"},
+            "url": "{{baseUrl}}/motoristas/{{motoristaId}}"
+          }
+        }
       ]
     },
     {
-      "name": "Itens de pedido",
+      "name": "04 - Veiculos",
       "item": [
-        {"name": "Listar itens", "request": {"method": "GET", "url": "{{baseUrl}}/itens-pedido"}},
-        {"name": "Adicionar item ao pedido", "request": {"method": "POST", "header": [{"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{\n  \"produto\": {\"id\": 1},\n  \"quantidade\": 1\n}"}, "url": "{{baseUrl}}/itens-pedido/pedido/1"}},
-        {"name": "Itens por pedido", "request": {"method": "GET", "url": "{{baseUrl}}/itens-pedido/pedido/1"}},
-        {"name": "Atualizar item", "request": {"method": "PUT", "header": [{"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{\n  \"produto\": {\"id\": 1},\n  \"quantidade\": 2\n}"}, "url": "{{baseUrl}}/itens-pedido/1"}},
-        {"name": "Excluir item", "request": {"method": "DELETE", "url": "{{baseUrl}}/itens-pedido/1"}}
+        {
+          "name": "Criar veiculo",
+          "event": [{"listen": "test", "script": {"type": "text/javascript", "exec": [
+            "pm.test('Veiculo criado', () => pm.response.to.have.status(201));",
+            "pm.collectionVariables.set('veiculoId', String(pm.response.json().id));"
+          ]}}],
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {"mode": "raw", "raw": "{\n  \"placa\": \"{{placaTeste}}\",\n  \"modelo\": \"Van Escolar\",\n  \"capacidade\": 12\n}"},
+            "url": "{{baseUrl}}/veiculos"
+          }
+        },
+        {"name": "Listar veiculos", "request": {"method": "GET", "url": "{{baseUrl}}/veiculos"}},
+        {"name": "Buscar veiculo", "request": {"method": "GET", "url": "{{baseUrl}}/veiculos/{{veiculoId}}"}},
+        {
+          "name": "Atualizar veiculo",
+          "request": {
+            "method": "PUT",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {"mode": "raw", "raw": "{\n  \"placa\": \"{{placaTeste}}\",\n  \"modelo\": \"Van Atualizada\",\n  \"capacidade\": 12\n}"},
+            "url": "{{baseUrl}}/veiculos/{{veiculoId}}"
+          }
+        }
       ]
     },
     {
-      "name": "Erros",
+      "name": "05 - Viagens",
       "item": [
-        {"name": "Validação 400", "request": {"method": "POST", "header": [{"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{ \"nome\": \"\" }"}, "url": "{{baseUrl}}/categorias"}},
-        {"name": "Recurso 404", "request": {"method": "GET", "url": "{{baseUrl}}/produtos/999999"}},
-        {"name": "Conflito 409", "request": {"method": "POST", "header": [{"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{ \"nome\": \"Informática\", \"descricao\": \"Duplicada\" }"}, "url": "{{baseUrl}}/categorias"}},
-        {"name": "Sem autenticação 401", "auth": {"type": "noauth"}, "request": {"method": "GET", "url": "{{baseUrl}}/produtos"}},
-        {"name": "Sem autorização 403", "auth": {"type": "basic", "basic": [{"key": "username", "value": "vendedor", "type": "string"}, {"key": "password", "value": "vendedor123", "type": "string"}]}, "request": {"method": "DELETE", "url": "{{baseUrl}}/produtos/1"}}
+        {
+          "name": "Criar viagem",
+          "event": [{"listen": "test", "script": {"type": "text/javascript", "exec": [
+            "pm.test('Viagem criada', () => pm.response.to.have.status(201));",
+            "pm.collectionVariables.set('viagemId', String(pm.response.json().id));"
+          ]}}],
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {"mode": "raw", "raw": "{\n  \"nome\": \"Linha Centro\",\n  \"data\": \"2026-11-24\",\n  \"horarioSaida\": \"07:00:00\",\n  \"horarioChegada\": \"08:00:00\",\n  \"motorista\": {\"id\": {{motoristaId}}},\n  \"veiculo\": {\"id\": {{veiculoId}}},\n  \"alunos\": [{\"id\": {{alunoId}}}],\n  \"status\": \"PLANEJADA\"\n}"},
+            "url": "{{baseUrl}}/viagens"
+          }
+        },
+        {"name": "Listar viagens", "request": {"method": "GET", "url": "{{baseUrl}}/viagens"}},
+        {"name": "Buscar viagem", "request": {"method": "GET", "url": "{{baseUrl}}/viagens/{{viagemId}}"}},
+        {"name": "Viagens por status", "request": {"method": "GET", "url": "{{baseUrl}}/viagens/consultas/status?status=PLANEJADA"}},
+        {"name": "Viagens por data", "request": {"method": "GET", "url": "{{baseUrl}}/viagens/consultas/data?data=2026-11-24"}},
+        {"name": "Viagens por motorista", "request": {"method": "GET", "url": "{{baseUrl}}/viagens/consultas/motorista/{{motoristaId}}"}},
+        {"name": "Atualizar viagem", "request": {
+          "method": "PUT",
+          "header": [{"key": "Content-Type", "value": "application/json"}],
+          "body": {"mode": "raw", "raw": "{\n  \"nome\": \"Linha Centro Atualizada\",\n  \"data\": \"2026-11-24\",\n  \"horarioSaida\": \"07:10:00\",\n  \"horarioChegada\": \"08:10:00\",\n  \"motorista\": {\"id\": {{motoristaId}}},\n  \"veiculo\": {\"id\": {{veiculoId}}},\n  \"alunos\": [{\"id\": {{alunoId}}}],\n  \"status\": \"PLANEJADA\"\n}"},
+          "url": "{{baseUrl}}/viagens/{{viagemId}}"
+        }},
+        {"name": "Iniciar viagem", "request": {"method": "PATCH", "url": "{{baseUrl}}/viagens/{{viagemId}}/status?status=EM_ANDAMENTO"}},
+        {"name": "Registrar aluno a bordo", "request": {"method": "PATCH", "url": "{{baseUrl}}/viagens/{{viagemId}}/presenca/{{alunoId}}?status=A_BORDO"}},
+        {"name": "Concluir viagem", "request": {"method": "PATCH", "url": "{{baseUrl}}/viagens/{{viagemId}}/status?status=CONCLUIDA"}}
+      ]
+    },
+    {
+      "name": "06 - Erros e autorizacao",
+      "item": [
+        {"name": "Sem autenticacao 401", "auth": {"type": "noauth"}, "request": {"method": "GET", "url": "{{baseUrl}}/viagens"}},
+        {"name": "Sem autorizacao 403", "auth": {"type": "basic", "basic": [{"key": "username", "value": "rcs2", "type": "string"}, {"key": "password", "value": "1234", "type": "string"}]}, "request": {"method": "DELETE", "url": "{{baseUrl}}/veiculos/{{veiculoId}}"}},
+        {"name": "Validacao 400", "request": {"method": "POST", "header": [{"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{ \"nome\": \"\", \"escola\": \"\", \"turma\": \"\", \"responsavel\": {\"id\": 999999} }"}, "url": "{{baseUrl}}/alunos"}},
+        {"name": "Recurso inexistente 404", "request": {"method": "GET", "url": "{{baseUrl}}/viagens/2147483647"}},
+        {"name": "Conflito de exclusao 409", "request": {"method": "DELETE", "url": "{{baseUrl}}/responsaveis/1"}},
+        {"name": "Capacidade insuficiente 409", "request": {
+          "method": "PUT",
+          "header": [{"key": "Content-Type", "value": "application/json"}],
+          "body": {"mode": "raw", "raw": "{ \"placa\": \"TOA1A00\", \"modelo\": \"Van\", \"capacidade\": 0 }"},
+          "url": "{{baseUrl}}/veiculos/{{veiculoId}}"
+        }}
+      ]
+    },
+    {
+      "name": "07 - Exclusoes",
+      "item": [
+        {"name": "Excluir viagem", "request": {"method": "DELETE", "url": "{{baseUrl}}/viagens/{{viagemId}}"}},
+        {"name": "Excluir aluno", "request": {"method": "DELETE", "url": "{{baseUrl}}/alunos/{{alunoId}}"}},
+        {"name": "Excluir motorista", "request": {"method": "DELETE", "url": "{{baseUrl}}/motoristas/{{motoristaId}}"}},
+        {"name": "Excluir veiculo", "request": {"method": "DELETE", "url": "{{baseUrl}}/veiculos/{{veiculoId}}"}},
+        {"name": "Excluir responsavel", "request": {"method": "DELETE", "url": "{{baseUrl}}/responsaveis/{{responsavelId}}"}}
       ]
     }
   ]

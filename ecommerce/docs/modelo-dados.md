@@ -1,44 +1,45 @@
-# Modelo de dados
+# Modelo de dados ToAqui
 
 ```mermaid
 erDiagram
-    CATEGORIA ||--o{ PRODUTO : classifica
-    CLIENTE ||--o{ PEDIDO : realiza
-    PEDIDO ||--|{ ITEM_PEDIDO : contem
-    PRODUTO ||--o{ ITEM_PEDIDO : compoe
+    RESPONSAVEL ||--o{ ALUNO : acompanha
+    MOTORISTA ||--o{ VIAGEM : conduz
+    VEICULO ||--o{ VIAGEM : utilizada
+    VIAGEM }o--o{ ALUNO : transporta
 
-    CATEGORIA {
-        short id PK
-        string nome
-        string descricao
-    }
-    PRODUTO {
+    RESPONSAVEL {
         integer id PK
         string nome
-        string descricao
-        short estoque
-        decimal preco
-        short categoria_id FK
+        string telefone
+        string email UK
     }
-    CLIENTE {
+    ALUNO {
         integer id PK
         string nome
-        string email
-        string documento
-        string endereco
+        string escola
+        string turma
+        integer responsavel_id FK
     }
-    PEDIDO {
+    MOTORISTA {
         integer id PK
-        integer cliente_id FK
+        string nome
+        string telefone
+        string registro_cnh UK
+    }
+    VEICULO {
+        integer id PK
+        string placa UK
+        string modelo
+        integer capacidade
+    }
+    VIAGEM {
+        integer id PK
+        string nome
+        date data
+        time horario_saida
+        time horario_chegada
+        integer motorista_id FK
+        integer veiculo_id FK
         string status
-        decimal total
-        datetime criado_em
-    }
-    ITEM_PEDIDO {
-        integer id PK
-        integer pedido_id FK
-        integer produto_id FK
-        short quantidade
-        decimal preco_unitario
     }
 ```

@@ -3,191 +3,190 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="color-scheme" content="light">
-  <title>Login | E-commerce PI</title>
+  <title>ToAqui - Transporte Escolar</title>
   <style>
     :root {
-      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      color: #172033;
-      background: #f3f6fb;
-      font-synthesis: none;
+      color-scheme: light;
+      font-family: Inter, "Segoe UI", Arial, sans-serif;
+      color: #17233c;
+      background: #eef3f8;
     }
     * { box-sizing: border-box; }
-    body { margin: 0; min-height: 100vh; display: grid; place-items: center; padding: 24px; }
-    main { width: min(100%, 940px); }
-    .card { background: white; border: 1px solid #e1e7f0; border-radius: 18px; box-shadow: 0 18px 55px #18335b12; }
-    .login { max-width: 440px; margin: auto; padding: 36px; }
-    .brand { display: flex; align-items: center; gap: 12px; margin-bottom: 28px; }
-    .brand-mark { display: grid; place-items: center; width: 44px; height: 44px; border-radius: 13px; color: white; background: #2755d9; font-weight: 800; }
-    h1 { margin: 0; font-size: 1.65rem; letter-spacing: -.03em; }
-    p { color: #657187; line-height: 1.55; }
-    label { display: block; margin: 18px 0 7px; color: #34415a; font-size: .9rem; font-weight: 650; }
-    input { width: 100%; padding: 12px 13px; border: 1px solid #cbd4e2; border-radius: 9px; font: inherit; }
-    input:focus { outline: 3px solid #2755d933; border-color: #2755d9; }
-    button, .button { border: 0; border-radius: 9px; padding: 12px 16px; background: #2755d9; color: white; font: inherit; font-weight: 700; cursor: pointer; text-decoration: none; }
-    button:hover, .button:hover { background: #1c43b6; }
-    button:disabled { opacity: .65; cursor: wait; }
-    .submit { width: 100%; margin-top: 24px; }
-    .hint { margin-top: 22px; padding: 12px; border-radius: 9px; background: #f3f6fb; font-size: .85rem; }
-    .message { min-height: 24px; margin: 12px 0 0; color: #b42318; font-size: .9rem; }
-    [hidden] { display: none !important; }
-    .dashboard { padding: 28px; }
-    .topbar { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
-    .topbar p { margin: 6px 0 0; }
-    .actions { display: flex; gap: 10px; align-items: center; }
-    .secondary { color: #24334e; background: #e9eef7; }
-    .secondary:hover { background: #dce5f3; }
-    .section-title { margin: 30px 0 12px; font-size: 1.1rem; }
-    .table-wrap { overflow-x: auto; border: 1px solid #e1e7f0; border-radius: 10px; }
-    table { width: 100%; border-collapse: collapse; text-align: left; }
-    th, td { padding: 12px 14px; border-bottom: 1px solid #e8edf4; }
-    th { background: #f7f9fc; font-size: .85rem; color: #526078; }
-    tr:last-child td { border-bottom: 0; }
-    .links { display: flex; flex-wrap: wrap; gap: 10px; }
-    .links a { color: #2755d9; }
-    .footnote { margin-top: 22px; font-size: .82rem; }
-    @media (max-width: 520px) { .login, .dashboard { padding: 24px; } .topbar { align-items: flex-start; } }
+    body {
+      min-height: 100vh;
+      margin: 0;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, #0f5f78, #1d8aa4 55%, #dbeef1);
+    }
+    .login-card {
+      width: min(430px, calc(100% - 32px));
+      padding: 32px;
+      border-radius: 20px;
+      background: rgba(255, 255, 255, .96);
+      box-shadow: 0 20px 50px rgba(15, 95, 120, .22);
+    }
+    .brand {
+      margin: 0 0 6px;
+      color: #0f5f78;
+      font-size: 36px;
+      letter-spacing: -1px;
+    }
+    .subtitle {
+      margin: 0 0 24px;
+      color: #64748b;
+    }
+    label {
+      display: block;
+      margin: 14px 0 7px;
+      font-size: 14px;
+      font-weight: 700;
+    }
+    select, input {
+      width: 100%;
+      height: 48px;
+      border: 1px solid #cbd5e1;
+      border-radius: 10px;
+      padding: 0 13px;
+      background: white;
+      color: #17233c;
+      font: inherit;
+    }
+    button {
+      width: 100%;
+      height: 48px;
+      margin-top: 20px;
+      border: 0;
+      border-radius: 10px;
+      background: #0f738f;
+      color: white;
+      font: inherit;
+      font-weight: 800;
+      cursor: pointer;
+    }
+    button:hover { background: #0b627a; }
+    button:disabled { cursor: wait; opacity: .65; }
+    .error {
+      min-height: 20px;
+      margin: 12px 0 0;
+      color: #b91c1c;
+      font-size: 14px;
+    }
+    .profile { display: none; }
+    .profile.active { display: block; }
+    .profile h2 { margin: 0 0 8px; }
+    .profile p { color: #64748b; }
+    .profile button {
+      margin-top: 16px;
+      background: #334155;
+    }
   </style>
 </head>
 <body>
-<main>
-  <section id="login-panel" class="card login" aria-labelledby="page-title">
-    <div class="brand">
-      <div class="brand-mark" aria-hidden="true">PI</div>
-      <div>
-        <h1 id="page-title">E-commerce</h1>
-        <p style="margin: 3px 0 0">Projeto Integrador · API REST</p>
-      </div>
-    </div>
-    <p>Entre com uma das credenciais de teste para consultar a API.</p>
-    <form id="login-form">
-      <label for="username">Usuário</label>
-      <input id="username" name="username" autocomplete="username" required>
-      <label for="password">Senha</label>
-      <input id="password" name="password" type="password" autocomplete="current-password" required>
-      <button id="submit-button" class="submit" type="submit">Entrar</button>
-      <p id="login-message" class="message" role="alert" aria-live="polite"></p>
-    </form>
-    <div class="hint">
-      <strong>Contas para demonstração</strong><br>
-      ADMIN: <code>admin</code> / <code>admin123</code><br>
-      VENDEDOR: <code>vendedor</code> / <code>vendedor123</code>
-    </div>
-    <p class="footnote">Autenticação HTTP Basic. As credenciais permanecem apenas na memória desta página e são removidas ao sair ou fechar a aba.</p>
-  </section>
+  <main class="login-card">
+    <section id="login-view">
+      <h1 class="brand">ToAqui</h1>
+      <p class="subtitle">Transporte escolar seguro e acompanhado</p>
 
-  <section id="dashboard" class="card dashboard" hidden aria-labelledby="dashboard-title">
-    <div class="topbar">
-      <div>
-        <h1 id="dashboard-title">Painel da API</h1>
-        <p>Autenticado como <strong id="active-user"></strong> · perfil <strong id="active-role"></strong></p>
-      </div>
-      <div class="actions">
-        <button id="refresh-button" class="secondary" type="button">Atualizar produtos</button>
-        <button id="logout-button" type="button">Sair</button>
-      </div>
-    </div>
-    <p id="dashboard-message" class="message" role="status" aria-live="polite"></p>
-    <h2 class="section-title">Produtos disponíveis</h2>
-    <div class="table-wrap">
-      <table>
-        <thead><tr><th>Produto</th><th>Categoria</th><th>Preço</th><th>Estoque</th></tr></thead>
-        <tbody id="products-body"></tbody>
-      </table>
-    </div>
-    <h2 class="section-title">Recursos da API</h2>
-    <p class="footnote">Os demais endpoints continuam protegidos por HTTP Basic. Use a coleção Postman do repositório para testar operações e regras de negócio.</p>
-  </section>
-</main>
-<script>
-  const loginPanel = document.querySelector("#login-panel");
-  const dashboard = document.querySelector("#dashboard");
-  const loginForm = document.querySelector("#login-form");
-  const loginMessage = document.querySelector("#login-message");
-  const dashboardMessage = document.querySelector("#dashboard-message");
-  const productsBody = document.querySelector("#products-body");
-  let authorizationHeader;
+      <form id="login-form">
+        <label for="profile">Tipo de acesso</label>
+        <select id="profile" name="profile">
+          <option value="rcs4">Administrador</option>
+          <option value="rcs2">Monitor</option>
+          <option value="rcs1">Responsável</option>
+          <option value="rcs3">Aluno</option>
+        </select>
 
-  function renderProducts(products) {
-    productsBody.replaceChildren();
-    for (const product of products) {
-      const row = document.createElement("tr");
-      for (const value of [
-        product.nome,
-        product.categoria?.nome ?? "—",
-        Number(product.preco).toLocaleString("pt-BR", { style: "currency", currency: "BRL" }),
-        product.estoque
-      ]) {
-        const cell = document.createElement("td");
-        cell.textContent = value;
-        row.append(cell);
-      }
-      productsBody.append(row);
+        <label for="username">Usuário</label>
+        <input id="username" name="username" value="rcs4" autocomplete="username" required>
+
+        <label for="password">Senha</label>
+        <input id="password" name="password" type="password" value="1234" autocomplete="current-password" required>
+
+        <button id="login-button" type="submit">Entrar</button>
+        <p id="login-error" class="error" role="alert"></p>
+      </form>
+    </section>
+
+    <section id="logged-view" class="profile">
+      <h2 id="welcome-title"></h2>
+      <p id="welcome-description"></p>
+      <button id="logout-button" type="button">Sair</button>
+    </section>
+  </main>
+
+  <script>
+    const profileConfig = {
+      rcs4: { name: "Administrador", description: "Acesso à gestão operacional completa." },
+      rcs2: { name: "Monitor", description: "Acesso às viagens e registro de presença." },
+      rcs1: { name: "Responsável", description: "Acesso à consulta e acompanhamento dos registros." },
+      rcs3: { name: "Aluno", description: "Acesso à consulta de viagens e informações públicas." }
+    };
+
+    const form = document.getElementById("login-form");
+    const profileSelect = document.getElementById("profile");
+    const usernameInput = document.getElementById("username");
+    const passwordInput = document.getElementById("password");
+    const errorText = document.getElementById("login-error");
+    const loginButton = document.getElementById("login-button");
+
+    profileSelect.addEventListener("change", () => {
+      const selected = profileSelect.value;
+      usernameInput.value = selected;
+      passwordInput.value = "1234";
+    });
+
+    function showLoggedProfile(username) {
+      const profile = profileConfig[username] || { name: "Usuário", description: "Autenticação realizada." };
+      document.getElementById("login-view").style.display = "none";
+      document.getElementById("logged-view").classList.add("active");
+      document.getElementById("welcome-title").textContent = profile.name;
+      document.getElementById("welcome-description").textContent = profile.description;
     }
-    dashboardMessage.textContent = products.length ? "" : "Nenhum produto cadastrado.";
-  }
 
-  async function fetchProducts() {
-    dashboardMessage.textContent = "Carregando produtos...";
-    try {
-      const response = await fetch("/produtos", {
-        headers: { Authorization: authorizationHeader },
-        cache: "no-store"
-      });
-      if (!response.ok) {
-        throw new Error(response.status === 401 ? "Sessão inválida. Entre novamente." : `Falha ao carregar produtos (${response.status}).`);
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      errorText.textContent = "";
+      loginButton.disabled = true;
+      loginButton.textContent = "Entrando...";
+
+      const username = usernameInput.value.trim();
+      const password = passwordInput.value;
+      const authorization = "Basic " + btoa(unescape(encodeURIComponent(username + ":" + password)));
+
+      try {
+        const response = await fetch("/api/status", {
+          headers: { "Authorization": authorization },
+          cache: "no-store"
+        });
+        if (!response.ok) {
+          throw new Error(response.status === 401
+            ? "Usuário ou senha inválidos."
+            : "Não foi possível autenticar.");
+        }
+        sessionStorage.setItem("toaqui-auth", authorization);
+        sessionStorage.setItem("toaqui-user", username);
+        showLoggedProfile(username);
+      } catch (error) {
+        errorText.textContent = error.message;
+      } finally {
+        loginButton.disabled = false;
+        loginButton.textContent = "Entrar";
       }
-      renderProducts(await response.json());
-    } catch (error) {
-      dashboardMessage.textContent = error.message || "Não foi possível conectar à API.";
+    });
+
+    document.getElementById("logout-button").addEventListener("click", () => {
+      sessionStorage.removeItem("toaqui-auth");
+      sessionStorage.removeItem("toaqui-user");
+      document.getElementById("logged-view").classList.remove("active");
+      document.getElementById("login-view").style.display = "block";
+      passwordInput.value = "";
+    });
+
+    const savedUser = sessionStorage.getItem("toaqui-user");
+    if (savedUser && sessionStorage.getItem("toaqui-auth")) {
+      showLoggedProfile(savedUser);
     }
-  }
-
-  loginForm.addEventListener("submit", async (event) => {
-    event.preventDefault();
-    const username = document.querySelector("#username").value.trim();
-    const password = document.querySelector("#password").value;
-    const submitButton = document.querySelector("#submit-button");
-    const encodedCredentials = btoa(`${username}:${password}`);
-    submitButton.disabled = true;
-    loginMessage.textContent = "Validando credenciais...";
-
-    try {
-      const response = await fetch("/produtos", {
-        headers: { Authorization: `Basic ${encodedCredentials}` },
-        cache: "no-store"
-      });
-      if (response.status === 401) {
-        throw new Error("Usuário ou senha inválidos.");
-      }
-      if (!response.ok) {
-        throw new Error(`Não foi possível entrar (${response.status}).`);
-      }
-
-      authorizationHeader = `Basic ${encodedCredentials}`;
-      document.querySelector("#active-user").textContent = username;
-      document.querySelector("#active-role").textContent = username === "admin" ? "ADMIN" : "VENDEDOR";
-      loginPanel.hidden = true;
-      dashboard.hidden = false;
-      renderProducts(await response.json());
-    } catch (error) {
-      loginMessage.textContent = error.message || "Não foi possível conectar à API.";
-    } finally {
-      submitButton.disabled = false;
-    }
-  });
-
-  document.querySelector("#refresh-button").addEventListener("click", fetchProducts);
-  document.querySelector("#logout-button").addEventListener("click", () => {
-    authorizationHeader = undefined;
-    loginForm.reset();
-    loginMessage.textContent = "";
-    dashboardMessage.textContent = "";
-    productsBody.replaceChildren();
-    dashboard.hidden = true;
-    loginPanel.hidden = false;
-    document.querySelector("#username").focus();
-  });
-</script>
+  </script>
 </body>
 </html>

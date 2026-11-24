@@ -1,83 +1,68 @@
-# Documentação da API
+# Documentação da API ToAqui
 
 Base URL: `http://localhost:8080`
 
-A página inicial (`/`) oferece um formulário de login para consultar produtos. Ela envia as credenciais de teste via HTTP Basic, sem persistir a senha. Os endpoints da API exigem HTTP Basic. Usuários:
+## Autenticação
 
-- `admin` / `admin123` - perfil ADMIN
-- `vendedor` / `vendedor123` - perfil VENDEDOR
+Todos os endpoints protegidos usam HTTP Basic.
 
-## Categorias
+- `rcs4` / `1234`: ADMIN
+- `rcs1` / `1234`: RESPONSAVEL
+- `rcs2` / `1234`: MONITOR
+- `rcs3` / `1234`: ALUNO
 
-| Método | Caminho | Descrição |
-|---|---|---|
-| GET | `/categorias` | Lista categorias |
-| GET | `/categorias/{id}` | Busca uma categoria |
-| POST | `/categorias` | Cria uma categoria |
-| PUT | `/categorias/{id}` | Atualiza uma categoria |
-| DELETE | `/categorias/{id}` | Remove uma categoria sem produtos associados |
+Somente ADMIN pode excluir registros.
 
-## Produtos
+## Responsáveis
 
-| Método | Caminho | Descrição |
-|---|---|---|
-| GET | `/produtos` | Lista produtos |
-| GET | `/produtos/{id}` | Busca um produto |
-| POST | `/produtos` | Cria um produto |
-| PUT | `/produtos/{id}` | Atualiza um produto |
-| DELETE | `/produtos/{id}` | Remove um produto |
-| GET | `/produtos/consultas/categoria/{categoriaId}` | Produtos por categoria |
-| GET | `/produtos/consultas/preco?limite=200` | Produtos até o preço informado |
-| GET | `/produtos/consultas/estoque-baixo?limite=10` | Produtos com estoque abaixo do limite |
+`GET /responsaveis`, `GET /responsaveis/{id}`, `POST /responsaveis`,
+`PUT /responsaveis/{id}` e `DELETE /responsaveis/{id}`.
 
-## Clientes
+## Alunos
 
-| Método | Caminho | Descrição |
-|---|---|---|
-| GET | `/clientes` | Lista clientes |
-| GET | `/clientes/{id}` | Busca um cliente |
-| POST | `/clientes` | Cria um cliente |
-| PUT | `/clientes/{id}` | Atualiza um cliente |
-| DELETE | `/clientes/{id}` | Remove um cliente |
+`GET /alunos`, `GET /alunos/{id}`, `GET /alunos/consultas/responsavel/{responsavelId}`,
+`POST /alunos`, `PUT /alunos/{id}` e `DELETE /alunos/{id}`.
 
-## Pedidos
+## Motoristas
 
-| Método | Caminho | Descrição |
-|---|---|---|
-| GET | `/pedidos` | Lista pedidos |
-| GET | `/pedidos/{id}` | Busca um pedido |
-| POST | `/pedidos` | Cria um pedido e baixa o estoque |
-| PATCH | `/pedidos/{id}/status?status=CANCELADO` | Atualiza o status e devolve itens ao cancelar |
-| DELETE | `/pedidos/{id}` | Remove o pedido e devolve o estoque |
-| GET | `/pedidos/consultas/cliente/{clienteId}` | Pedidos por cliente |
-| GET | `/pedidos/consultas/status?status=NOVO` | Pedidos por status |
+`GET /motoristas`, `GET /motoristas/{id}`, `POST /motoristas`,
+`PUT /motoristas/{id}` e `DELETE /motoristas/{id}`.
 
-## Itens de pedido
+## Veículos
 
-| Método | Caminho | Descrição |
-|---|---|---|
-| GET | `/itens-pedido` | Lista itens |
-| GET | `/itens-pedido/{id}` | Busca um item |
-| GET | `/itens-pedido/pedido/{pedidoId}` | Lista itens de um pedido |
-| POST | `/itens-pedido/pedido/{pedidoId}` | Adiciona item e atualiza estoque |
-| PUT | `/itens-pedido/{id}` | Atualiza quantidade |
-| DELETE | `/itens-pedido/{id}` | Remove item e devolve estoque |
+`GET /veiculos`, `GET /veiculos/{id}`, `POST /veiculos`,
+`PUT /veiculos/{id}` e `DELETE /veiculos/{id}`.
 
-## Regras e respostas
+## Viagens
 
-- `400`: validação ou dados inválidos
-- `404`: entidade não encontrada
-- `409`: conflito de regra de negócio
+`GET /viagens`, `GET /viagens/{id}`, `POST /viagens`, `PUT /viagens/{id}` e
+`DELETE /viagens/{id}`.
+
+Consultas personalizadas:
+
+- `GET /viagens/consultas/status?status=EM_ANDAMENTO`
+- `GET /viagens/consultas/data?data=2026-11-24`
+- `GET /viagens/consultas/motorista/{motoristaId}`
+
+Operações específicas:
+
+- `PATCH /viagens/{id}/status?status=EM_ANDAMENTO`
+- `PATCH /viagens/{id}/presenca/{alunoId}?status=A_BORDO`
+
+## Regras principais
+
+- Um aluno deve possuir um responsável válido.
+- A capacidade do veículo deve ser maior que zero.
+- Uma viagem precisa de motorista, veículo e pelo menos um aluno.
+- Alunos não podem ser repetidos em uma viagem.
+- O número de alunos não pode exceder a capacidade.
+- Motorista ou veículo não pode ser usado em outra viagem em andamento na mesma data.
+- Responsáveis com alunos, motoristas/veículos com viagens e alunos em viagens não podem ser excluídos.
+
+## Códigos de resposta
+
+- `400`: dados inválidos
 - `401`: credenciais ausentes ou inválidas
-- `403`: usuário autenticado sem perfil suficiente
-
-Exemplo de pedido:
-
-```json
-{
-  "cliente": {"id": 1},
-  "itens": [
-    {"produto": {"id": 1}, "quantidade": 2}
-  ]
-}
-```
+- `403`: usuário sem perfil suficiente
+- `404`: recurso inexistente
+- `409`: conflito com regra de negócio
