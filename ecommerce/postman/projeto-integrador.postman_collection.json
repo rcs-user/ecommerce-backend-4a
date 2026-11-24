@@ -1,0 +1,81 @@
+{
+  "info": {
+    "name": "Projeto Integrador - E-commerce",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "basic",
+    "basic": [
+      {"key": "username", "value": "{{username}}", "type": "string"},
+      {"key": "password", "value": "{{password}}", "type": "string"}
+    ]
+  },
+  "variable": [
+    {"key": "baseUrl", "value": "http://localhost:8080"},
+    {"key": "username", "value": "admin"},
+    {"key": "password", "value": "admin123"}
+  ],
+  "item": [
+    {
+      "name": "Categorias",
+      "item": [
+        {"name": "Listar categorias", "request": {"method": "GET", "url": "{{baseUrl}}/categorias"}},
+        {"name": "Criar categoria", "request": {"method": "POST", "header": [{"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{\n  \"nome\": \"Esportes\",\n  \"descricao\": \"Produtos esportivos\"\n}"}, "url": "{{baseUrl}}/categorias"}},
+        {"name": "Buscar categoria", "request": {"method": "GET", "url": "{{baseUrl}}/categorias/1"}},
+        {"name": "Atualizar categoria", "request": {"method": "PUT", "header": [{"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{\n  \"nome\": \"Informática\",\n  \"descricao\": \"Computadores e periféricos\"\n}"}, "url": "{{baseUrl}}/categorias/1"}},
+        {"name": "Excluir categoria", "request": {"method": "DELETE", "url": "{{baseUrl}}/categorias/1"}}
+      ]
+    },
+    {
+      "name": "Produtos",
+      "item": [
+        {"name": "Listar produtos", "request": {"method": "GET", "url": "{{baseUrl}}/produtos"}},
+        {"name": "Produtos por categoria", "request": {"method": "GET", "url": "{{baseUrl}}/produtos/consultas/categoria/1"}},
+        {"name": "Produtos até preço", "request": {"method": "GET", "url": "{{baseUrl}}/produtos/consultas/preco?limite=200"}},
+        {"name": "Estoque baixo", "request": {"method": "GET", "url": "{{baseUrl}}/produtos/consultas/estoque-baixo?limite=10"}},
+        {"name": "Criar produto", "request": {"method": "POST", "header": [{"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{\n  \"nome\": \"Mouse Gamer\",\n  \"descricao\": \"Mouse de alta precisão\",\n  \"estoque\": 20,\n  \"preco\": 199.90,\n  \"categoria\": {\"id\": 1}\n}"}, "url": "{{baseUrl}}/produtos"}},
+        {"name": "Atualizar produto", "request": {"method": "PUT", "header": [{"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{\n  \"nome\": \"Mouse Gamer\",\n  \"descricao\": \"Atualizado\",\n  \"estoque\": 15,\n  \"preco\": 189.90,\n  \"categoria\": {\"id\": 1}\n}"}, "url": "{{baseUrl}}/produtos/1"}},
+        {"name": "Excluir produto", "request": {"method": "DELETE", "url": "{{baseUrl}}/produtos/1"}}
+      ]
+    },
+    {
+      "name": "Clientes",
+      "item": [
+        {"name": "Listar clientes", "request": {"method": "GET", "url": "{{baseUrl}}/clientes"}},
+        {"name": "Criar cliente", "request": {"method": "POST", "header": [{"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{\n  \"nome\": \"Ana Pereira\",\n  \"email\": \"ana@example.com\",\n  \"documento\": \"11122233344\",\n  \"endereco\": \"Rua Central, 10\"\n}"}, "url": "{{baseUrl}}/clientes"}},
+        {"name": "Excluir cliente", "request": {"method": "DELETE", "url": "{{baseUrl}}/clientes/1"}}
+      ]
+    },
+    {
+      "name": "Pedidos",
+      "item": [
+        {"name": "Criar pedido", "request": {"method": "POST", "header": [{"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{\n  \"cliente\": {\"id\": 1},\n  \"itens\": [{\"produto\": {\"id\": 2}, \"quantidade\": 1}]\n}"}, "url": "{{baseUrl}}/pedidos"}},
+        {"name": "Listar pedidos", "request": {"method": "GET", "url": "{{baseUrl}}/pedidos"}},
+        {"name": "Pedidos por status", "request": {"method": "GET", "url": "{{baseUrl}}/pedidos/consultas/status?status=NOVO"}},
+        {"name": "Pedidos por cliente", "request": {"method": "GET", "url": "{{baseUrl}}/pedidos/consultas/cliente/1"}},
+        {"name": "Cancelar pedido", "request": {"method": "PATCH", "url": "{{baseUrl}}/pedidos/1/status?status=CANCELADO"}},
+        {"name": "Excluir pedido", "request": {"method": "DELETE", "url": "{{baseUrl}}/pedidos/1"}}
+      ]
+    },
+    {
+      "name": "Itens de pedido",
+      "item": [
+        {"name": "Listar itens", "request": {"method": "GET", "url": "{{baseUrl}}/itens-pedido"}},
+        {"name": "Adicionar item ao pedido", "request": {"method": "POST", "header": [{"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{\n  \"produto\": {\"id\": 1},\n  \"quantidade\": 1\n}"}, "url": "{{baseUrl}}/itens-pedido/pedido/1"}},
+        {"name": "Itens por pedido", "request": {"method": "GET", "url": "{{baseUrl}}/itens-pedido/pedido/1"}},
+        {"name": "Atualizar item", "request": {"method": "PUT", "header": [{"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{\n  \"produto\": {\"id\": 1},\n  \"quantidade\": 2\n}"}, "url": "{{baseUrl}}/itens-pedido/1"}},
+        {"name": "Excluir item", "request": {"method": "DELETE", "url": "{{baseUrl}}/itens-pedido/1"}}
+      ]
+    },
+    {
+      "name": "Erros",
+      "item": [
+        {"name": "Validação 400", "request": {"method": "POST", "header": [{"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{ \"nome\": \"\" }"}, "url": "{{baseUrl}}/categorias"}},
+        {"name": "Recurso 404", "request": {"method": "GET", "url": "{{baseUrl}}/produtos/999999"}},
+        {"name": "Conflito 409", "request": {"method": "POST", "header": [{"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{ \"nome\": \"Informática\", \"descricao\": \"Duplicada\" }"}, "url": "{{baseUrl}}/categorias"}},
+        {"name": "Sem autenticação 401", "auth": {"type": "noauth"}, "request": {"method": "GET", "url": "{{baseUrl}}/produtos"}},
+        {"name": "Sem autorização 403", "auth": {"type": "basic", "basic": [{"key": "username", "value": "vendedor", "type": "string"}, {"key": "password", "value": "vendedor123", "type": "string"}]}, "request": {"method": "DELETE", "url": "{{baseUrl}}/produtos/1"}}
+      ]
+    }
+  ]
+}
